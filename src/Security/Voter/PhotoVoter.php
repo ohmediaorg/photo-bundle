@@ -26,17 +26,17 @@ class PhotoVoter extends AbstractEntityVoter
         return Photo::class;
     }
 
-    protected function canCreate(Photo $galleryPhoto, User $loggedIn): bool
+    protected function canCreate(Photo $photo, User $loggedIn): bool
     {
         return true;
     }
 
-    protected function canEdit(Photo $galleryPhoto, User $loggedIn): bool
+    protected function canEdit(Photo $photo, User $loggedIn): bool
     {
         return true;
     }
 
-    protected function canDelete(Photo $galleryPhoto, User $loggedIn): bool
+    protected function canDelete(Photo $photo, User $loggedIn): bool
     {
         return true;
     }

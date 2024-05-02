@@ -18,29 +18,29 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Admin]
 class PhotoController extends AbstractController
 {
-    #[Route('/gallery/{id}/photo/create', name: 'gallery_photo_create', methods: ['GET', 'POST'])]
+    #[Route('/gallery/{id}/photo/create', name: 'photo_create', methods: ['GET', 'POST'])]
     public function create(
         Request $request,
         Gallery $gallery,
-        PhotoRepository $galleryPhotoRepository
+        PhotoRepository $photoRepository
     ): Response {
-        $galleryPhoto = new Photo();
-        $galleryPhoto->setGallery($gallery);
+        $photo = new Photo();
+        $photo->setGallery($gallery);
 
         $this->denyAccessUnlessGranted(
             PhotoVoter::CREATE,
-            $galleryPhoto,
+            $photo,
             'You cannot create a new photo.'
         );
 
-        $form = $this->createForm(PhotoType::class, $galleryPhoto);
+        $form = $this->createForm(PhotoType::class, $photo);
 
         $form->add('submit', SubmitType::class);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $galleryPhotoRepository->save($galleryPhoto, true);
+            $photoRepository->save($photo, true);
 
             $this->addFlash('notice', 'The photo was created successfully.');
 
@@ -49,63 +49,63 @@ class PhotoController extends AbstractController
             ]);
         }
 
-        return $this->render('@OHMediaPhoto/gallery/photo/gallery_photo_create.html.twig', [
+        return $this->render('@OHMediaPhoto/photo/photo_create.html.twig', [
             'form' => $form->createView(),
-            'gallery_photo' => $galleryPhoto,
+            'photo' => $photo,
             'gallery' => $gallery,
         ]);
     }
 
-    #[Route('/gallery/photo/{id}/edit', name: 'gallery_photo_edit', methods: ['GET', 'POST'])]
+    #[Route('/gallery/photo/{id}/edit', name: 'photo_edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
-        Photo $galleryPhoto,
-        PhotoRepository $galleryPhotoRepository
+        Photo $photo,
+        PhotoRepository $photoRepository
     ): Response {
         $this->denyAccessUnlessGranted(
             PhotoVoter::EDIT,
-            $galleryPhoto,
-            'You cannot edit this gallery photo.'
+            $photo,
+            'You cannot edit this photo.'
         );
 
-        $gallery = $galleryPhoto->getGallery();
+        $gallery = $photo->getGallery();
 
-        $form = $this->createForm(PhotoType::class, $galleryPhoto);
+        $form = $this->createForm(PhotoType::class, $photo);
 
         $form->add('submit', SubmitType::class);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $galleryPhotoRepository->save($galleryPhoto, true);
+            $photoRepository->save($photo, true);
 
-            $this->addFlash('notice', 'The gallery photo was updated successfully.');
+            $this->addFlash('notice', 'The photo was updated successfully.');
 
             return $this->redirectToRoute('gallery_view', [
                 'id' => $gallery->getId(),
             ]);
         }
 
-        return $this->render('@OHMediaPhoto/gallery/photo/gallery_photo_edit.html.twig', [
+        return $this->render('@OHMediaPhoto/photo/photo_edit.html.twig', [
             'form' => $form->createView(),
-            'gallery_photo' => $galleryPhoto,
+            'photo' => $photo,
             'gallery' => $gallery,
         ]);
     }
 
-    #[Route('/gallery/photo/{id}/delete', name: 'gallery_photo_delete', methods: ['GET', 'POST'])]
+    #[Route('/gallery/photo/{id}/delete', name: 'photo_delete', methods: ['GET', 'POST'])]
     public function delete(
         Request $request,
-        Photo $galleryPhoto,
-        PhotoRepository $galleryPhotoRepository
+        Photo $photo,
+        PhotoRepository $photoRepository
     ): Response {
         $this->denyAccessUnlessGranted(
             PhotoVoter::DELETE,
-            $galleryPhoto,
-            'You cannot delete this gallery photo.'
+            $photo,
+            'You cannot delete this photo.'
         );
 
-        $gallery = $galleryPhoto->getGallery();
+        $gallery = $photo->getGallery();
 
         $form = $this->createForm(DeleteType::class, null);
 
@@ -114,18 +114,18 @@ class PhotoController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $galleryPhotoRepository->remove($galleryPhoto, true);
+            $photoRepository->remove($photo, true);
 
-            $this->addFlash('notice', 'The gallery photo was deleted successfully.');
+            $this->addFlash('notice', 'The photo was deleted successfully.');
 
             return $this->redirectToRoute('gallery_view', [
                 'id' => $gallery->getId(),
             ]);
         }
 
-        return $this->render('@OHMediaPhoto/gallery/photo/gallery_photo_delete.html.twig', [
+        return $this->render('@OHMediaPhoto/photo/photo_delete.html.twig', [
             'form' => $form->createView(),
-            'gallery_photo' => $galleryPhoto,
+            'photo' => $photo,
             'gallery' => $gallery,
         ]);
     }

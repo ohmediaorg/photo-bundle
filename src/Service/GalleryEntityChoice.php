@@ -9,7 +9,7 @@ class GalleryEntityChoice implements EntityChoiceInterface
 {
     public function getLabel(): string
     {
-        return 'Photos';
+        return 'Galleries';
     }
 
     public function getEntities(): array

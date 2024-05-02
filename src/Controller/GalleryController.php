@@ -23,11 +23,11 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Admin]
 class GalleryController extends AbstractController
 {
-    private const CSRF_TOKEN_REORDER = 'gallery_photo_reorder';
+    private const CSRF_TOKEN_REORDER = 'photo_reorder';
 
     public function __construct(
         private GalleryRepository $galleryRepository,
-        private PhotoRepository $galleryPhotoRepository,
+        private PhotoRepository $photoRepository,
         private Connection $connection,
         private Paginator $paginator,
         private RequestStack $requestStack
@@ -103,12 +103,12 @@ class GalleryController extends AbstractController
         return $this->render('@OHMediaPhoto/gallery/gallery_view.html.twig', [
             'gallery' => $gallery,
             'attributes' => $this->getAttributes(),
-            'new_gallery_photo' => $newPhoto,
+            'new_photo' => $newPhoto,
             'csrf_token_name' => self::CSRF_TOKEN_REORDER,
         ]);
     }
 
-    #[Route('/gallery/{id}/photos/reorder', name: 'gallery_photo_reorder_post', methods: ['POST'])]
+    #[Route('/gallery/{id}/photos/reorder', name: 'photo_reorder_post', methods: ['POST'])]
     public function reorderPost(Gallery $gallery): Response
     {
         $this->denyAccessUnlessGranted(
@@ -125,18 +125,18 @@ class GalleryController extends AbstractController
             return new JsonResponse('Invalid CSRF token.', 400);
         }
 
-        $galleryPhotos = $request->request->all('order');
+        $photos = $request->request->all('order');
 
         $this->connection->beginTransaction();
 
         try {
-            foreach ($galleryPhotos as $ordinal => $id) {
-                $galleryPhoto = $this->galleryPhotoRepository->find($id);
+            foreach ($photos as $ordinal => $id) {
+                $photo = $this->photoRepository->find($id);
 
-                if ($galleryPhoto) {
-                    $galleryPhoto->setOrdinal($ordinal);
+                if ($photo) {
+                    $photo->setOrdinal($ordinal);
 
-                    $this->galleryPhotoRepository->save($galleryPhoto, true);
+                    $this->photoRepository->save($photo, true);
                 }
             }
 
@@ -219,7 +219,7 @@ class GalleryController extends AbstractController
                 'delete' => GalleryVoter::DELETE,
                 'edit' => GalleryVoter::EDIT,
             ],
-            'gallery_photo' => [
+            'photo' => [
                 'create' => PhotoVoter::CREATE,
                 'delete' => PhotoVoter::DELETE,
                 'edit' => PhotoVoter::EDIT,
