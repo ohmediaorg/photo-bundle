@@ -5,14 +5,16 @@ namespace OHMedia\PhotoBundle\Twig;
 use OHMedia\FileBundle\Service\FileManager;
 use OHMedia\PhotoBundle\Repository\GalleryRepository;
 use OHMedia\WysiwygBundle\Twig\AbstractWysiwygExtension;
+use Symfony\Component\HttpFoundation\UrlHelper;
 use Twig\Environment;
 use Twig\TwigFunction;
 
 class WysiwygExtension extends AbstractWysiwygExtension
 {
     public function __construct(
-        private GalleryRepository $galleryRepository,
         private FileManager $fileManager,
+        private GalleryRepository $galleryRepository,
+        private UrlHelper $urlHelper
     ) {
     }
 
@@ -45,10 +47,12 @@ class WysiwygExtension extends AbstractWysiwygExtension
         ]);
 
         foreach ($photos as $photo) {
+            $webPath = $this->fileManager->getWebPath($photo->getImage());
+
             $schema = [
                 '@context' => 'https://schema.org',
                 '@type' => 'ImageObject',
-                'contentUrl' => $fileManager->getWebPath($photo->getImage()),
+                'contentUrl' => $this->urlHelper->getAbsoluteUrl($webPath),
                 'caption' => $photo->getCaption(),
             ];
 
