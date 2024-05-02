@@ -51,7 +51,8 @@
       <thead>
         <tr>
           <th style="width:1rem">&nbsp;</th>
-          <th>Photo</th>
+          <th>Image</th>
+          <th>Caption</th>
           <th></th>
         </tr>
       </thead>
@@ -64,7 +65,10 @@
       {% for photo in gallery.photos %}
         <tr data-id="{{ photo.id }}">
           <td data-handle>{{ bootstrap_icon('arrows-move') }}</td>
-          <td>{{ photo.header }}</td>
+          <td>{{ image_tag(photo.image, {
+            width: 150,
+          }) }}</td>
+          <td>{{ photo.caption }}</td>
           <td>
             {% if is_granted(attributes.photo.edit, photo) %}
             <a class="btn btn-sm btn-primary btn-action" href="{{ path('photo_edit', {id: photo.id}) }}" title="Edit">
