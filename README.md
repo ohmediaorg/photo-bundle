@@ -49,17 +49,17 @@ Display a limited gallery:
 
 {% set uniq = uniq() %}
 
-<ul id="gallery_{{ uniq }}">
-{% for photo in gallery.photos if loop.index <= 4 %}
-<li>
-  <a href="#" >
+<ul id="gallery_{{ uniq }}" class="gallery">
+{% for photo in gallery.photos %}{% if loop.index <= 4 %}
+<li class="gallery-item">
+  <a href="#" class="gallery-photo">
     {{ image_tag(photo.image, {
-      width: ...,
-      height: ...,
+      width: 300,
+      height: 200,
     }) }}
   </a>
 </li>
-{% endfor %}
+{% endif %}{% endfor %}
 </ul>
 
 <a href="#" id="gallery_{{ uniq }}_view_all" class="btn">View All Photos</a>
@@ -68,31 +68,23 @@ Display a limited gallery:
 document.addEventListener('DOMContentLoaded', function() {
   const items = [];
 
-  {% for photo in gallery.photos if loop.index <= 4 %}
-  {% set caption = photo.caption ? photo.caption : '' %}
+  {% for photo in gallery.photos %}
+  {% set caption = photo.caption ?: '' %}
   items.push({
     src: {{ image_path(photo.image)|json_encode|raw }},
-    opts: {
-      caption: {{ caption|json_encode|raw }},
-    }
+    caption: {{ caption|json_encode|raw }},
   });
   {% endfor %}
 
-  let fancybox = null;
-
   function openFancybox(index) {
-    if (!fancybox) {
-      fancybox = new Fancybox(items, {}, index);
-    } else {
-      fancybox.jumpTo(index);
-    }
+    new Fancybox(items, {
+      startIndex: index,
+    }, index);
   }
-
-  const fancybox = new Fancybox(items);
 
   const gallery = document.getElementById('gallery_{{ uniq }}');
 
-  const photos = gallery.querySelectorAll('li > a');
+  const photos = gallery.querySelectorAll('.gallery-photo');
 
   photos.forEach(function(photo, index) {
     photo.addEventListener('click', (e) => {
@@ -102,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  const button = document.getElementById('view-all-photos');
+  const button = document.getElementById('gallery_{{ uniq }}_view_all');
 
   button.addEventListener('click', function(e) {
     e.preventDefault();
