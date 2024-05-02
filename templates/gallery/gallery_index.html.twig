@@ -44,9 +44,9 @@
           <td>{{ gallery.updatedAt|datetime }}</td>
           <td>
             {% if is_granted(attributes.gallery.view, gallery) %}
-            <a class="btn btn-sm btn-primary btn-action" href="{{ path('gallery_view', {id: gallery.id}) }}" title="View">
-              {{ bootstrap_icon('list') }}
-              <span class="visually-hidden">View</span>
+            <a class="btn btn-sm btn-primary btn-action" href="{{ path('gallery_view', {id: gallery.id}) }}" title="Photos">
+              {{ bootstrap_icon('images') }}
+              <span class="visually-hidden">Photos</span>
             </a>
             {% endif %}
             {% if is_granted(attributes.gallery.edit, gallery) %}
