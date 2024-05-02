@@ -4,6 +4,7 @@ namespace OHMedia\PhotoBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use OHMedia\FileBundle\Entity\File;
 use OHMedia\PhotoBundle\Repository\PhotoRepository;
 use OHMedia\SecurityBundle\Entity\Traits\BlameableTrait;
 
@@ -25,14 +26,18 @@ class Photo
     private ?Gallery $gallery = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $header = null;
+    private ?string $caption = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $content = null;
+    private ?string $credit = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?File $image = null;
 
     public function __toString(): string
     {
-        return $this->header;
+        return $this->caption;
     }
 
     public function getId(): ?int
@@ -64,26 +69,38 @@ class Photo
         return $this;
     }
 
-    public function getHeader(): ?string
+    public function getCaption(): ?string
     {
-        return $this->header;
+        return $this->caption;
     }
 
-    public function setHeader(string $header): static
+    public function setCaption(string $caption): static
     {
-        $this->header = $header;
+        $this->caption = $caption;
 
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getCredit(): ?string
     {
-        return $this->content;
+        return $this->credit;
     }
 
-    public function setContent(string $content): static
+    public function setCredit(string $credit): static
     {
-        $this->content = $content;
+        $this->credit = $credit;
+
+        return $this;
+    }
+
+    public function getImage(): ?File
+    {
+        return $this->image;
+    }
+
+    public function setImage(File $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }
