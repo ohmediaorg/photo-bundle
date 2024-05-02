@@ -28,7 +28,7 @@ class Photo
     #[ORM\Column(length: 255)]
     private ?string $caption = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $credit = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
