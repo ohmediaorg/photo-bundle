@@ -1,8 +1,8 @@
 {
-    "name": "ohmediaorg/gallery-bundle",
+    "name": "ohmediaorg/photo-bundle",
     "type": "symfony-bundle",
     "description": "Symfony PhotoBundle",
-    "keywords": ["Gallery"],
+    "keywords": ["Photo"],
     "license": "proprietary",
     "authors": [
         {
