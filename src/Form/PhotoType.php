@@ -22,7 +22,7 @@ class PhotoType extends AbstractType
         ]);
 
         $builder->add('image', FileEntityType::class, [
-            'image' => false,
+            'image' => true,
             'data' => $photo->getImage(),
         ]);
     }
