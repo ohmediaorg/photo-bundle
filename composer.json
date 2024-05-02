@@ -1,0 +1,25 @@
+{
+    "name": "ohmediaorg/gallery-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony PhotoBundle",
+    "keywords": ["Gallery"],
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Justin Hoffman",
+            "email": "justin@ohmedia.ca"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "symfony/framework-bundle": "6.4.*"
+    },
+    "autoload": {
+        "psr-4": { "OHMedia\\PhotoBundle\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OHMedia\\PhotoBundle\\Tests\\": "tests/"
+        }
+    }
+}
