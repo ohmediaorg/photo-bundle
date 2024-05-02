@@ -15,15 +15,15 @@ class PhotoType extends AbstractType
     {
         $photo = $options['data'];
 
+        $builder->add('image', FileEntityType::class, [
+            'image' => true,
+            'data' => $photo->getImage(),
+        ]);
+
         $builder->add('caption');
 
         $builder->add('credit', TextType::class, [
             'required' => false,
-        ]);
-
-        $builder->add('image', FileEntityType::class, [
-            'image' => true,
-            'data' => $photo->getImage(),
         ]);
     }
 
