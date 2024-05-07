@@ -11,12 +11,6 @@ Update `composer.json` by adding this to the `repositories` array:
 
 Then run `composer require ohmediaorg/photo-bundle:dev-main`.
 
-Enable the bundle in `config/bundles.php`:
-
-```php
-OHMedia\PhotoBundle\OHMediaPhotoBundle::class => ['all' => true],
-```
-
 Import the routes in `config/routes.yaml`:
 
 ```yaml
