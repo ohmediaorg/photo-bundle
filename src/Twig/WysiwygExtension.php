@@ -30,7 +30,7 @@ class WysiwygExtension extends AbstractWysiwygExtension
 
     public function gallery(Environment $twig, int $id = null)
     {
-        $gallery = $this->galleryRepository->find($id);
+        $gallery = $id ? $this->galleryRepository->find($id) : null;
 
         if (!$gallery) {
             return '';
