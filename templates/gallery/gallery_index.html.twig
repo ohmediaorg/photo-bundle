@@ -8,9 +8,13 @@
 ) }}
 {% endblock %}
 
+{% set can_create_gallery = is_granted(attributes.gallery.create, new_gallery) %}
+
+{% set create_gallery_href = path('gallery_create') %}
+
 {% block actions %}
-{% if is_granted(attributes.gallery.create, new_gallery) %}
-<a href="{{ path('gallery_create') }}" class="btn btn-sm btn-primary">
+{% if can_create_gallery %}
+<a href="{{ create_gallery_href }}" class="btn btn-sm btn-primary">
   <i class="bi bi-plus"></i> Add Gallery</a>
 {% endif %}
 {% endblock %}
@@ -25,6 +29,7 @@
       </div>
     </div>
 
+    {% if pagination.count %}
     <table class="table table-striped">
       <thead>
         <tr>
@@ -63,8 +68,6 @@
             {% endif %}
           </td>
         </tr>
-        {% else %}
-        <tr><td colspan="100%">No galleries found.</td></tr>
         {% endfor %}
       </tbody>
     </table>
@@ -72,6 +75,14 @@
     {{ bootstrap_pagination(pagination) }}
 
     <small>{{ bootstrap_pagination_info(pagination) }}</small>
+    {% else %}
+      <p>
+        No galleries found.
+        {% if can_create_gallery %}
+        <a href="{{ create_gallery_href }}">Click here to add a gallery.</a>
+        {% endif %}
+      </p>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

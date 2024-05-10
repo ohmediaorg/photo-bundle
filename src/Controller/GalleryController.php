@@ -45,8 +45,8 @@ class GalleryController extends AbstractController
             'You cannot access the list of galleries.'
         );
 
-        $qb = $this->galleryRepository->createQueryBuilder('a');
-        $qb->orderBy('a.name', 'asc');
+        $qb = $this->galleryRepository->createQueryBuilder('g');
+        $qb->orderBy('g.name', 'asc');
 
         return $this->render('@OHMediaPhoto/gallery/gallery_index.html.twig', [
             'pagination' => $this->paginator->paginate($qb, 20),
