@@ -18,11 +18,14 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Admin]
 class PhotoController extends AbstractController
 {
+    public function __construct(private PhotoRepository $photoRepository)
+    {
+    }
+
     #[Route('/gallery/{id}/photo/create', name: 'photo_create', methods: ['GET', 'POST'])]
     public function create(
         Request $request,
         Gallery $gallery,
-        PhotoRepository $photoRepository
     ): Response {
         $photo = new Photo();
         $photo->setGallery($gallery);
@@ -40,7 +43,7 @@ class PhotoController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $photoRepository->save($photo, true);
+            $this->photoRepository->save($photo, true);
 
             $this->addFlash('notice', 'The photo was created successfully.');
 
@@ -60,7 +63,6 @@ class PhotoController extends AbstractController
     public function edit(
         Request $request,
         Photo $photo,
-        PhotoRepository $photoRepository
     ): Response {
         $this->denyAccessUnlessGranted(
             PhotoVoter::EDIT,
@@ -77,7 +79,7 @@ class PhotoController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $photoRepository->save($photo, true);
+            $this->photoRepository->save($photo, true);
 
             $this->addFlash('notice', 'The photo was updated successfully.');
 
@@ -97,7 +99,6 @@ class PhotoController extends AbstractController
     public function delete(
         Request $request,
         Photo $photo,
-        PhotoRepository $photoRepository
     ): Response {
         $this->denyAccessUnlessGranted(
             PhotoVoter::DELETE,
@@ -114,7 +115,7 @@ class PhotoController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $photoRepository->remove($photo, true);
+            $this->photoRepository->remove($photo, true);
 
             $this->addFlash('notice', 'The photo was deleted successfully.');
 
