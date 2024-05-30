@@ -72,14 +72,18 @@ class GalleryController extends AbstractController
 
         $form->handleRequest($this->requestStack->getCurrentRequest());
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->galleryRepository->save($gallery, true);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->galleryRepository->save($gallery, true);
 
-            $this->addFlash('notice', 'The gallery was created successfully.');
+                $this->addFlash('notice', 'The gallery was created successfully.');
 
-            return $this->redirectToRoute('gallery_view', [
-                'id' => $gallery->getId(),
-            ]);
+                return $this->redirectToRoute('gallery_view', [
+                    'id' => $gallery->getId(),
+                ]);
+            }
+
+            $this->addFlash('error', 'There are some errors in the form below.');
         }
 
         return $this->render('@OHMediaPhoto/gallery/gallery_create.html.twig', [
@@ -165,14 +169,18 @@ class GalleryController extends AbstractController
 
         $form->handleRequest($this->requestStack->getCurrentRequest());
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->galleryRepository->save($gallery, true);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->galleryRepository->save($gallery, true);
 
-            $this->addFlash('notice', 'The gallery was updated successfully.');
+                $this->addFlash('notice', 'The gallery was updated successfully.');
 
-            return $this->redirectToRoute('gallery_view', [
-                'id' => $gallery->getId(),
-            ]);
+                return $this->redirectToRoute('gallery_view', [
+                    'id' => $gallery->getId(),
+                ]);
+            }
+
+            $this->addFlash('error', 'There are some errors in the form below.');
         }
 
         return $this->render('@OHMediaPhoto/gallery/gallery_edit.html.twig', [
@@ -196,12 +204,16 @@ class GalleryController extends AbstractController
 
         $form->handleRequest($this->requestStack->getCurrentRequest());
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->galleryRepository->remove($gallery, true);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->galleryRepository->remove($gallery, true);
 
-            $this->addFlash('notice', 'The gallery was deleted successfully.');
+                $this->addFlash('notice', 'The gallery was deleted successfully.');
 
-            return $this->redirectToRoute('gallery_index');
+                return $this->redirectToRoute('gallery_index');
+            }
+
+            $this->addFlash('error', 'There are some errors in the form below.');
         }
 
         return $this->render('@OHMediaPhoto/gallery/gallery_delete.html.twig', [

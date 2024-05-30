@@ -42,14 +42,18 @@ class PhotoController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->photoRepository->save($photo, true);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->photoRepository->save($photo, true);
 
-            $this->addFlash('notice', 'The photo was created successfully.');
+                $this->addFlash('notice', 'The photo was created successfully.');
 
-            return $this->redirectToRoute('gallery_view', [
-                'id' => $gallery->getId(),
-            ]);
+                return $this->redirectToRoute('gallery_view', [
+                    'id' => $gallery->getId(),
+                ]);
+            }
+
+            $this->addFlash('error', 'There are some errors in the form below.');
         }
 
         return $this->render('@OHMediaPhoto/photo/photo_create.html.twig', [
@@ -78,14 +82,18 @@ class PhotoController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->photoRepository->save($photo, true);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->photoRepository->save($photo, true);
 
-            $this->addFlash('notice', 'The photo was updated successfully.');
+                $this->addFlash('notice', 'The photo was updated successfully.');
 
-            return $this->redirectToRoute('gallery_view', [
-                'id' => $gallery->getId(),
-            ]);
+                return $this->redirectToRoute('gallery_view', [
+                    'id' => $gallery->getId(),
+                ]);
+            }
+
+            $this->addFlash('error', 'There are some errors in the form below.');
         }
 
         return $this->render('@OHMediaPhoto/photo/photo_edit.html.twig', [
@@ -114,14 +122,18 @@ class PhotoController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->photoRepository->remove($photo, true);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->photoRepository->remove($photo, true);
 
-            $this->addFlash('notice', 'The photo was deleted successfully.');
+                $this->addFlash('notice', 'The photo was deleted successfully.');
 
-            return $this->redirectToRoute('gallery_view', [
-                'id' => $gallery->getId(),
-            ]);
+                return $this->redirectToRoute('gallery_view', [
+                    'id' => $gallery->getId(),
+                ]);
+            }
+
+            $this->addFlash('error', 'There are some errors in the form below.');
         }
 
         return $this->render('@OHMediaPhoto/photo/photo_delete.html.twig', [
