@@ -45,7 +45,7 @@
         <tr>
           <td>{{ gallery.name }}</td>
           <td>{{ gallery.photos|length }}</td>
-          <td><code>{{ '{{ gallery(' ~ gallery.id ~ ') }}' }}</code></td>
+          <td><code>{{ '{{gallery(' ~ gallery.id ~ ')}}' }}</code></td>
           <td>{{ gallery.updatedAt|datetime }}</td>
           <td>
             {% if is_granted(attributes.gallery.view, gallery) %}
