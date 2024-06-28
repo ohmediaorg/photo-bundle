@@ -57,7 +57,7 @@ class GalleryVoter extends AbstractEntityVoter
 
     protected function canDelete(Gallery $gallery, User $loggedIn): bool
     {
-        $shortcode = sprintf('{{ gallery(%d) }}', $gallery->getId());
+        $shortcode = sprintf('gallery(%d)', $gallery->getId());
 
         return !$this->wysiwyg->shortcodesInUse($shortcode);
     }
