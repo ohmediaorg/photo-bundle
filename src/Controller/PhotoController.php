@@ -8,7 +8,7 @@ use OHMedia\PhotoBundle\Entity\Photo;
 use OHMedia\PhotoBundle\Form\PhotoType;
 use OHMedia\PhotoBundle\Repository\PhotoRepository;
 use OHMedia\PhotoBundle\Security\Voter\PhotoVoter;
-use OHMedia\SecurityBundle\Form\DeleteType;
+use OHMedia\UtilityBundle\Form\DeleteType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
