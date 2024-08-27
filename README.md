@@ -65,8 +65,8 @@ document.addEventListener('DOMContentLoaded', function() {
   {% for photo in gallery.photos %}
   {% set caption = photo.caption ?: '' %}
   items.push({
-    src: {{ image_path(photo.image)|json_encode|raw }},
-    caption: {{ caption|json_encode|raw }},
+    src: {{ image_path(photo.image)|js }},
+    caption: {{ caption|js }},
   });
   {% endfor %}
 
