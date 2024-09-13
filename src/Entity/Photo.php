@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use OHMedia\FileBundle\Entity\File;
 use OHMedia\PhotoBundle\Repository\PhotoRepository;
 use OHMedia\UtilityBundle\Entity\BlameableEntityTrait;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PhotoRepository::class)]
 class Photo
@@ -26,6 +27,8 @@ class Photo
     private ?Gallery $gallery = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $caption = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -50,7 +53,7 @@ class Photo
         return $this->ordinal;
     }
 
-    public function setOrdinal(int $ordinal): self
+    public function setOrdinal(?int $ordinal): self
     {
         $this->ordinal = $ordinal;
 
@@ -74,7 +77,7 @@ class Photo
         return $this->caption;
     }
 
-    public function setCaption(string $caption): static
+    public function setCaption(?string $caption): static
     {
         $this->caption = $caption;
 
@@ -86,7 +89,7 @@ class Photo
         return $this->credit;
     }
 
-    public function setCredit(string $credit): static
+    public function setCredit(?string $credit): static
     {
         $this->credit = $credit;
 
@@ -98,7 +101,7 @@ class Photo
         return $this->image;
     }
 
-    public function setImage(File $image): static
+    public function setImage(?File $image): static
     {
         $this->image = $image;
 
