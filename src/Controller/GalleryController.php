@@ -13,6 +13,7 @@ use OHMedia\PhotoBundle\Repository\PhotoRepository;
 use OHMedia\PhotoBundle\Security\Voter\GalleryVoter;
 use OHMedia\PhotoBundle\Security\Voter\PhotoVoter;
 use OHMedia\UtilityBundle\Form\DeleteType;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -93,8 +94,9 @@ class GalleryController extends AbstractController
     }
 
     #[Route('/gallery/{id}', name: 'gallery_view', methods: ['GET'])]
-    public function view(Gallery $gallery): Response
-    {
+    public function view(
+        #[MapEntity(id: 'id')] Gallery $gallery,
+    ): Response {
         $this->denyAccessUnlessGranted(
             GalleryVoter::VIEW,
             $gallery,
@@ -113,8 +115,9 @@ class GalleryController extends AbstractController
     }
 
     #[Route('/gallery/{id}/photos/reorder', name: 'photo_reorder_post', methods: ['POST'])]
-    public function reorderPost(Gallery $gallery): Response
-    {
+    public function reorderPost(
+        #[MapEntity(id: 'id')] Gallery $gallery,
+    ): Response {
         $this->denyAccessUnlessGranted(
             GalleryVoter::INDEX,
             $gallery,
@@ -155,8 +158,9 @@ class GalleryController extends AbstractController
     }
 
     #[Route('/gallery/{id}/edit', name: 'gallery_edit', methods: ['GET', 'POST'])]
-    public function edit(Gallery $gallery): Response
-    {
+    public function edit(
+        #[MapEntity(id: 'id')] Gallery $gallery,
+    ): Response {
         $this->denyAccessUnlessGranted(
             GalleryVoter::EDIT,
             $gallery,
@@ -190,8 +194,9 @@ class GalleryController extends AbstractController
     }
 
     #[Route('/gallery/{id}/delete', name: 'gallery_delete', methods: ['GET', 'POST'])]
-    public function delete(Gallery $gallery): Response
-    {
+    public function delete(
+        #[MapEntity(id: 'id')] Gallery $gallery,
+    ): Response {
         $this->denyAccessUnlessGranted(
             GalleryVoter::DELETE,
             $gallery,

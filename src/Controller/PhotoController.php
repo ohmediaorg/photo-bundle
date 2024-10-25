@@ -9,6 +9,7 @@ use OHMedia\PhotoBundle\Form\PhotoType;
 use OHMedia\PhotoBundle\Repository\PhotoRepository;
 use OHMedia\PhotoBundle\Security\Voter\PhotoVoter;
 use OHMedia\UtilityBundle\Form\DeleteType;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,7 @@ class PhotoController extends AbstractController
     #[Route('/gallery/{id}/photo/create', name: 'photo_create', methods: ['GET', 'POST'])]
     public function create(
         Request $request,
-        Gallery $gallery,
+        #[MapEntity(id: 'id')] Gallery $gallery,
     ): Response {
         $photo = new Photo();
         $photo->setGallery($gallery);
@@ -66,7 +67,7 @@ class PhotoController extends AbstractController
     #[Route('/gallery/photo/{id}/edit', name: 'photo_edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
-        Photo $photo,
+        #[MapEntity(id: 'id')] Photo $photo,
     ): Response {
         $this->denyAccessUnlessGranted(
             PhotoVoter::EDIT,
@@ -106,7 +107,7 @@ class PhotoController extends AbstractController
     #[Route('/gallery/photo/{id}/delete', name: 'photo_delete', methods: ['GET', 'POST'])]
     public function delete(
         Request $request,
-        Photo $photo,
+        #[MapEntity(id: 'id')] Photo $photo,
     ): Response {
         $this->denyAccessUnlessGranted(
             PhotoVoter::DELETE,
