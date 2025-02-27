@@ -20,10 +20,18 @@ class PhotoType extends AbstractType
             'data' => $photo->getImage(),
         ]);
 
-        $builder->add('caption');
+        $builder->add('caption', TextType::class, [
+            'required' => false,
+            'attr' => [
+                'maxlength' => Photo::CAPTION_LENGTH,
+            ],
+        ]);
 
         $builder->add('credit', TextType::class, [
             'required' => false,
+            'attr' => [
+                'maxlength' => Photo::CREDIT_LENGTH,
+            ],
         ]);
     }
 
