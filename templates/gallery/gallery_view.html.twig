@@ -65,10 +65,14 @@
       {% for photo in gallery.photos %}
         <tr data-id="{{ photo.id }}">
           <td data-handle>{{ bootstrap_icon('arrows-move') }}</td>
-          <td>{{ image_tag(photo.image, {
-            width: 50,
-            height: 50,
-          }) }}</td>
+          <td>
+            <a href="{{ file_path(photo.image) }}" target="_blank" data-bypass>
+              {{ image_tag(photo.image, {
+                width: 50,
+                height: 50,
+              }) }}
+            </a>
+          </td>
           <td>{{ photo.caption }}</td>
           <td>
             {% if is_granted(attributes.photo.edit, photo) %}
