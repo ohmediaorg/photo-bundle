@@ -39,6 +39,8 @@ class Photo
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Valid]
+    #[Assert\NotBlank]
     private ?File $image = null;
 
     public function __toString(): string
