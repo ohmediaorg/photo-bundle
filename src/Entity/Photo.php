@@ -43,7 +43,7 @@ class Photo
 
     public function __toString(): string
     {
-        return $this->caption;
+        return (string) $this->image;
     }
 
     public function getId(): ?int
