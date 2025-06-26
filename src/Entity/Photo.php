@@ -14,9 +14,6 @@ class Photo
 {
     use BlameableEntityTrait;
 
-    public const CAPTION_LENGTH = 255;
-    public const CREDIT_LENGTH = 255;
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -29,12 +26,12 @@ class Photo
     #[ORM\JoinColumn(nullable: false)]
     private ?Gallery $gallery = null;
 
-    #[ORM\Column(length: self::CAPTION_LENGTH, nullable: true)]
-    #[Assert\Length(max: self::CAPTION_LENGTH)]
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $caption = null;
 
-    #[ORM\Column(length: self::CREDIT_LENGTH, nullable: true)]
-    #[Assert\Length(max: self::CREDIT_LENGTH)]
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $credit = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
