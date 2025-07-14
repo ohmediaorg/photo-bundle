@@ -26,12 +26,12 @@ class Photo
     #[ORM\JoinColumn(nullable: false)]
     private ?Gallery $gallery = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(max: 255)]
+    #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Length(max: 100)]
     private ?string $caption = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(max: 255)]
+    #[ORM\Column(length: 50, nullable: true)]
+    #[Assert\Length(max: 50)]
     private ?string $credit = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
