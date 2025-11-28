@@ -14,7 +14,7 @@ class GalleryNavItemProvider extends AbstractNavItemProvider
     {
         if ($this->isGranted(GalleryVoter::INDEX, new Gallery())) {
             return (new NavLink('Galleries', 'gallery_index'))
-                ->setIcon('camera-fill');
+                ->setIcon('images');
         }
 
         return null;
