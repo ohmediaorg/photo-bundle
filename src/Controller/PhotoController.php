@@ -2,6 +2,7 @@
 
 namespace OHMedia\PhotoBundle\Controller;
 
+use OHMedia\BackendBundle\Form\MultiSaveType;
 use OHMedia\BackendBundle\Routing\Attribute\Admin;
 use OHMedia\PhotoBundle\Entity\Gallery;
 use OHMedia\PhotoBundle\Entity\Photo;
@@ -12,6 +13,7 @@ use OHMedia\UtilityBundle\Form\DeleteType;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,7 +41,7 @@ class PhotoController extends AbstractController
 
         $form = $this->createForm(PhotoType::class, $photo);
 
-        $form->add('save', SubmitType::class);
+        $form->add('save', MultiSaveType::class);
 
         $form->handleRequest($request);
 
@@ -49,9 +51,7 @@ class PhotoController extends AbstractController
 
                 $this->addFlash('notice', 'The photo was created successfully.');
 
-                return $this->redirectToRoute('gallery_view', [
-                    'id' => $gallery->getId(),
-                ]);
+                return $this->redirectForm($photo, $form);
             }
 
             $this->addFlash('error', 'There are some errors in the form below.');
@@ -79,7 +79,7 @@ class PhotoController extends AbstractController
 
         $form = $this->createForm(PhotoType::class, $photo);
 
-        $form->add('save', SubmitType::class);
+        $form->add('save', MultiSaveType::class);
 
         $form->handleRequest($request);
 
@@ -89,9 +89,7 @@ class PhotoController extends AbstractController
 
                 $this->addFlash('notice', 'The photo was updated successfully.');
 
-                return $this->redirectToRoute('gallery_view', [
-                    'id' => $gallery->getId(),
-                ]);
+                return $this->redirectForm($photo, $form);
             }
 
             $this->addFlash('error', 'There are some errors in the form below.');
@@ -102,6 +100,25 @@ class PhotoController extends AbstractController
             'photo' => $photo,
             'gallery' => $gallery,
         ]);
+    }
+
+    private function redirectForm(Photo $photo, FormInterface $form): Response
+    {
+        $clickedButtonName = $form->getClickedButton()->getName() ?? null;
+
+        if ('keep_editing' === $clickedButtonName) {
+            return $this->redirectToRoute('photo_edit', [
+                'id' => $photo->getId(),
+            ]);
+        } elseif ('add_another' === $clickedButtonName) {
+            return $this->redirectToRoute('photo_create', [
+                'id' => $photo->getGallery()->getId(),
+            ]);
+        } else {
+            return $this->redirectToRoute('gallery_view', [
+                'id' => $photo->getGallery()->getId(),
+            ]);
+        }
     }
 
     #[Route('/gallery/photo/{id}/delete', name: 'photo_delete', methods: ['GET', 'POST'])]
