@@ -50,11 +50,11 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th style="width:1rem">&nbsp;</th>
+            <th style="width:1rem" aria-label="Reorder Rows"></th>
             <th>Image</th>
             <th>Caption</th>
             <th>Credit</th>
-            <th></th>
+            <th aria-label="Row Actions"></th>
           </tr>
         </thead>
         <tbody
@@ -107,7 +107,7 @@
   <tr data-id="{{ photo.id }}">
     <td data-handle>{{ bootstrap_icon('arrows-move') }}</td>
     <td>
-      <a href="{{ file_path(photo.image) }}" target="_blank" data-bypass>
+      <a href="{{ file_path(photo.image) }}" target="_blank" data-bypass aria-label="View photo">
         {{ image_tag(photo.image, {
           width: 50,
           height: 50,
