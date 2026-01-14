@@ -3,9 +3,9 @@
 {% set form_title = 'Edit Gallery' %}
 
 {% block breadcrumbs %}
-{{ bootstrap_breadcrumbs(
-  bootstrap_breadcrumb(bootstrap_icon('camera-fill') ~ ' Galleries', 'gallery_index'),
-  bootstrap_breadcrumb(gallery, 'gallery_view', {id: gallery.id}),
-  bootstrap_breadcrumb('Edit'),
-) }}
+  {{ bootstrap_breadcrumbs(
+    bootstrap_breadcrumb(bootstrap_icon('images') ~ ' Galleries', 'gallery_index'),
+    bootstrap_breadcrumb(gallery, 'gallery_view', {id: gallery.id}),
+    bootstrap_breadcrumb('Edit'),
+  ) }}
 {% endblock %}

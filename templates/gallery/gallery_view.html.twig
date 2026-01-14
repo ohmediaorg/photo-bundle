@@ -4,7 +4,7 @@
 
 {% block breadcrumbs %}
 {{ bootstrap_breadcrumbs(
-  bootstrap_breadcrumb(bootstrap_icon('camera-fill') ~ ' Galleries', 'gallery_index'),
+  bootstrap_breadcrumb(bootstrap_icon('images') ~ ' Galleries', 'gallery_index'),
   bootstrap_breadcrumb(gallery),
 ) }}
 {% endblock %}
@@ -13,93 +13,113 @@
 {% set create_photo_href = path('photo_create', {id: gallery.id}) %}
 
 {% block actions %}
-<div class="btn-group btn-group-sm">
   {% if can_create_photo %}
     <a class="btn btn-primary" href="{{ create_photo_href }}">
-      {{ bootstrap_icon('plus') }}
+      {{ bootstrap_icon('plus-lg') }}
       Add Photo
     </a>
   {% endif %}
+
   {% if is_granted(attributes.gallery.edit, gallery) %}
-    <a class="btn btn-primary" href="{{ path('gallery_edit', {id: gallery.id}) }}">
-      {{ bootstrap_icon('pen-fill') }}
-      Edit
+    <a class="btn btn-secondary" href="{{ path('gallery_edit', {id: gallery.id}) }}">
+      {{ bootstrap_icon('pencil') }}
+      Edit Gallery
     </a>
   {% endif %}
+
   {% if is_granted(attributes.photo.delete, gallery) %}
     <a class="btn btn-danger" href="{{ path('gallery_delete', {id: gallery.id}) }}" data-confirm="Are you sure you want to delete this gallery? Clicking OK will take you to a verification step to delete this entry.">
-      {{ bootstrap_icon('trash-fill') }}
-      Delete
+      {{ bootstrap_icon('trash') }}
+      Delete Gallery
     </a>
   {% endif %}
-</div>
 {% endblock %}
 
 {% block main %}
-<div class="card">
-  <div class="card-body">
-    <div class="card-title card-title-with-count">
-      <h1 class="card-title-heading">Photos</h1>
-      <div class="card-title-count">
-        {{ bootstrap_badge_primary(gallery.photos|length) }}
+  <div class="card">
+    <div class="card-body">
+      <div class="card-title card-title-with-count">
+        <h1 class="card-title-heading">Photos</h1>
+        <div class="card-title-count">
+          {{ bootstrap_badge_primary(gallery.photos|length) }}
+        </div>
       </div>
-    </div>
-    <h2 class="card-subtitle mb-3 text-body-secondary h5">{{ gallery }}</h2>
+      <h2 class="card-subtitle mb-3 text-body-secondary h5">{{ gallery }}</h2>
 
-    {% if gallery.photos|length %}
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th style="width:1rem">&nbsp;</th>
-          <th>Image</th>
-          <th>Caption</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody
-        data-sortable
-        data-sortable-csrf-name="{{ csrf_token_name }}"
-        data-sortable-csrf-token="{{ csrf_token(csrf_token_name) }}"
-        data-sortable-url="{{ path('photo_reorder_post', {id: gallery.id}) }}"
-      >
-      {% for photo in gallery.photos %}
-        <tr data-id="{{ photo.id }}">
-          <td data-handle>{{ bootstrap_icon('arrows-move') }}</td>
-          <td>
-            <a href="{{ file_path(photo.image) }}" target="_blank" data-bypass>
-              {{ image_tag(photo.image, {
-                width: 50,
-                height: 50,
-              }) }}
-            </a>
-          </td>
-          <td>{{ photo.caption }}</td>
-          <td>
-            {% if is_granted(attributes.photo.edit, photo) %}
-            <a class="btn btn-sm btn-primary btn-action" href="{{ path('photo_edit', {id: photo.id}) }}" title="Edit">
-              {{ bootstrap_icon('pen-fill') }}
-              <span class="visually-hidden">Edit</span>
-            </a>
-            {% endif %}
-            {% if is_granted(attributes.photo.delete, photo) %}
-            <a class="btn btn-sm btn-danger btn-action" href="{{ path('photo_delete', {id: photo.id}) }}" title="Delete" data-confirm="Are you sure you want to delete this photo? Clicking OK will take you to a verification step to delete this entry.">
-              {{ bootstrap_icon('trash-fill') }}
-              <span class="visually-hidden">Delete</span>
-            </a>
-            {% endif %}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p>
-      No photos found.
-      {% if can_create_photo %}
-      <a href="{{ create_photo_href }}">Click here to add an photo.</a>
+      {% if gallery.photos|length %}
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th style="width:1rem">&nbsp;</th>
+            <th>Image</th>
+            <th>Caption</th>
+            <th>Credit</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody
+          data-sortable
+          data-sortable-csrf-name="{{ csrf_token_name }}"
+          data-sortable-csrf-token="{{ csrf_token(csrf_token_name) }}"
+          data-sortable-url="{{ path('photo_reorder_post', {id: gallery.id}) }}"
+        >
+          {% for photo in gallery.photos %}
+            {{ _self.table_row(photo, attributes) }}
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>
+        No photos found.
+        {% if can_create_photo %}
+          <a href="{{ create_photo_href }}">Click here to add an photo.</a>
+        {% endif %}
+      </p>
       {% endif %}
-    </p>
-    {% endif %}
+    </div>
   </div>
-</div>
 {% endblock %}
+
+{% macro table_row(photo, attributes) %}
+  {% set row_actions = [] %}
+
+  {% if is_granted(attributes.photo.edit, photo) %}
+    {% set row_actions = row_actions|merge([{
+      route: 'photo_edit',
+      route_params: {id: photo.id},
+      color: 'secondary',
+      icon: 'pencil',
+      text: 'Edit Photo',
+    }]) %}
+  {% endif %}
+
+  {% if is_granted(attributes.photo.delete, photo) %}
+    {% set row_actions = row_actions|merge([{
+      route: 'photo_delete',
+      route_params: {id: photo.id},
+      color: 'danger',
+      icon: 'trash',
+      text: 'Delete Photo',
+      confirm: 'Are you sure you want to delete this photo? Clicking OK will take you to a verification step to delete this entry.',
+    }]) %}
+  {% endif %}
+
+  <tr data-id="{{ photo.id }}">
+    <td data-handle>{{ bootstrap_icon('arrows-move') }}</td>
+    <td>
+      <a href="{{ file_path(photo.image) }}" target="_blank" data-bypass>
+        {{ image_tag(photo.image, {
+          width: 50,
+          height: 50,
+        }) }}
+      </a>
+    </td>
+    <td>{{ photo.caption }}</td>
+    <td>{{ photo.credit }}</td>
+    <td>
+      {% include '@OHMediaBackend/widget/row_actions.html.twig' with {
+        row_actions: row_actions,
+      } only %}
+    </td>
+  </tr>
+{% endmacro %}
