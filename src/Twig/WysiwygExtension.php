@@ -28,7 +28,7 @@ class WysiwygExtension extends AbstractWysiwygExtension
         ];
     }
 
-    public function gallery(Environment $twig, int $id = null)
+    public function gallery(Environment $twig, ?int $id = null)
     {
         $gallery = $id ? $this->galleryRepository->find($id) : null;
 
