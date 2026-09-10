@@ -28,7 +28,7 @@ class Gallery
      * @var Collection<int, Photo>
      */
     #[ORM\OneToMany(targetEntity: Photo::class, mappedBy: 'gallery', orphanRemoval: true)]
-    #[ORM\OrderBy(['ordinal' => 'ASC'])]
+    #[ORM\OrderBy(['ordinal' => \SortDirection::Ascending])]
     private Collection $photos;
 
     public function __construct()

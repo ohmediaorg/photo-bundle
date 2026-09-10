@@ -20,7 +20,7 @@ class GalleryShortcodeProvider extends AbstractShortcodeProvider
     public function buildShortcodes(): void
     {
         $galleries = $this->galleryRepository->createQueryBuilder('g')
-            ->orderBy('g.name', 'asc')
+            ->orderBy('g.name', \SortDirection::Ascending)
             ->getQuery()
             ->getResult();
 

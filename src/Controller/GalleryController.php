@@ -53,7 +53,7 @@ class GalleryController extends AbstractController
         );
 
         $qb = $this->galleryRepository->createQueryBuilder('g');
-        $qb->orderBy('g.name', 'asc');
+        $qb->orderBy('g.name', \SortDirection::Ascending);
 
         $searchForm = $this->getSearchForm($request);
 
